@@ -2,15 +2,24 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-// get all comics
+// get all comics (limit, skip 100)
 router.get("/comics", async (req, res) => {
   try {
-    const data = await axios.get(
-      `${process.env.BASE_API_URL}/comics?apiKey=${process.env.API_KEY}`,
+    // limit for dropdown (quantity per page)
+    let limit = req.query.limit || 100;
+    let page = (req.query.page - 1) * limit || 0;
+
+    let queries = "";
+
+    if (req.query.name) queries += "&title=" + req.query.title;
+    if (req.query.limit) queries += "&limit=" + limit;
+    if (req.query.page) queries += "&skip=" + page;
+
+    const response = await axios.get(
+      `${process.env.MARVEL_API_URL}/comics?apiKey=${process.env.API_KEY}${queries}`,
     );
 
-    const comics = data.data;
-    res.status(200).json({ comics });
+    res.status(200).json(response.data);
   } catch (error) {
     res
       .status(error.status || 500)
@@ -22,11 +31,10 @@ router.get("/comics", async (req, res) => {
 router.get("/comic/:id", async (req, res) => {
   try {
     const response = await axios.get(
-      `${process.env.BASE_API_URL}/comic/${req.params.id}?apiKey=${process.env.API_KEY}`,
+      `${process.env.MARVEL_API_URL}/comic/${req.params.id}?apiKey=${process.env.API_KEY}`,
     );
-    const comic = response.data;
 
-    res.status(200).json({ comic });
+    res.status(200).json(response.data);
   } catch (error) {
     res
       .status(error.status || 500)
@@ -38,12 +46,10 @@ router.get("/comic/:id", async (req, res) => {
 router.get("/comics/:id", async (req, res) => {
   try {
     const response = await axios.get(
-      `${process.env.BASE_API_URL}/comics/${req.params.id}?apiKey=${process.env.API_KEY}`,
+      `${process.env.MARVEL_API_URL}/comics/${req.params.id}?apiKey=${process.env.API_KEY}`,
     );
 
-    const comics = response.data;
-
-    res.status(200).json({ comics });
+    res.status(200).json(response.data);
   } catch (error) {
     res
       .status(error.status || 500)
