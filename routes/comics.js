@@ -10,8 +10,9 @@ router.get("/comics", async (req, res) => {
     let page = (req.query.page - 1) * limit || 0;
 
     let queries = "";
+    console.log(req.query.title);
 
-    if (req.query.name) queries += "&title=" + req.query.title;
+    if (req.query.title) queries += "&title=" + req.query.title;
     if (req.query.limit) queries += "&limit=" + limit;
     if (req.query.page) queries += "&skip=" + page;
 
