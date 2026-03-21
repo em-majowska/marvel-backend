@@ -10,14 +10,13 @@ router.get("/comics", async (req, res) => {
     let page = (req.query.page - 1) * limit || 0;
 
     let queries = "";
-    console.log(req.query.title);
 
     if (req.query.title) queries += "&title=" + req.query.title;
     if (req.query.limit) queries += "&limit=" + limit;
     if (req.query.page) queries += "&skip=" + page;
 
     const response = await axios.get(
-      `${process.env.MARVEL_API_URL}/comics?apiKey=${process.env.API_KEY}${queries}`,
+      `${process.env.MARVEL_API_URL}/comics?apiKey=${process.env.MARVEL_API_KEY}${queries}`,
     );
 
     res.status(200).json(response.data);
@@ -32,7 +31,7 @@ router.get("/comics", async (req, res) => {
 router.get("/comic/:id", async (req, res) => {
   try {
     const response = await axios.get(
-      `${process.env.MARVEL_API_URL}/comic/${req.params.id}?apiKey=${process.env.API_KEY}`,
+      `${process.env.MARVEL_API_URL}/comic/${req.params.id}?apiKey=${process.env.MARVEL_API_KEY}`,
     );
 
     res.status(200).json(response.data);
@@ -47,7 +46,7 @@ router.get("/comic/:id", async (req, res) => {
 router.get("/comics/:id", async (req, res) => {
   try {
     const response = await axios.get(
-      `${process.env.MARVEL_API_URL}/comics/${req.params.id}?apiKey=${process.env.API_KEY}`,
+      `${process.env.MARVEL_API_URL}/comics/${req.params.id}?apiKey=${process.env.MARVEL_API_KEY}`,
     );
 
     res.status(200).json(response.data);

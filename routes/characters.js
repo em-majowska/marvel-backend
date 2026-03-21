@@ -16,7 +16,7 @@ router.get("/characters", async (req, res) => {
     if (req.query.page) queries += "&skip=" + page;
 
     const response = await axios.get(
-      `${process.env.MARVEL_API_URL}/characters?apiKey=${process.env.API_KEY}${queries}`,
+      `${process.env.MARVEL_API_URL}/characters?apiKey=${process.env.MARVEL_API_KEY}${queries}`,
     );
 
     res.status(200).json(response.data);
@@ -31,7 +31,7 @@ router.get("/characters", async (req, res) => {
 router.get("/character/:id", async (req, res) => {
   try {
     const response = await axios.get(
-      `${process.env.MARVEL_API_URL}/character/${req.params.id}?apiKey=${process.env.API_KEY}`,
+      `${process.env.MARVEL_API_URL}/character/${req.params.id}?apiKey=${process.env.MARVEL_API_KEY}`,
     );
 
     res.status(200).json(response.data);
