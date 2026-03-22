@@ -114,6 +114,19 @@ router.get("/user/favourites", isAuthenticated, async (req, res) => {
   }
 });
 
+// GET user's account data
+router.get("/user/account", isAuthenticated, async (req, res) => {
+  try {
+    const user = req.user;
+
+    res.status(200).json({ account: user.account });
+  } catch (error) {
+    res
+      .status(error.status || 500)
+      .json({ message: error.message || "Internal server error" });
+  }
+});
+
 // PUT save new favourites
 router.put("/user/modify", isAuthenticated, async (req, res) => {
   try {
